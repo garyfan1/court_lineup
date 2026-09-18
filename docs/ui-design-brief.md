@@ -26,7 +26,9 @@ is free. Everyone sees the same board; it updates live.
    - Exactly one group — the **next up** group — carries a **Play now** button. It
      is the earliest group in arrival order that has all four names. No other card
      has the button at all, disabled or otherwise.
-4. A **sticky bottom bar** with the primary action: **Add my name**.
+4. A **sticky bottom bar** with the primary action: **Start a group**. It must not
+   read as adding a name to something that already exists — a first-time user who
+   thinks that will never work out how a group begins.
 5. **Clear board** — present, but deliberately hard to hit by accident. Never
    adjacent to a frequent action.
 
@@ -34,7 +36,7 @@ is free. Everyone sees the same board; it updates live.
 
 | Action | Behaviour |
 | --- | --- |
-| **Add my name** | Dialog with one text field, pre-filled with the last name this browser used, fully editable → creates a new group containing that one name |
+| **Start a group** | Dialog with one text field, pre-filled with the last name this browser used, fully editable → creates a new group containing that one name |
 | **Tap an open group** | Same dialog → the name joins that group |
 | **Remove a queued name** | Immediate, no confirmation. If it was the last name, the group disappears |
 | **Play now** | Only on the next up group. It leaves the queue and lands on the lowest-numbered empty court. Disabled (not hidden) when all three courts are in use |

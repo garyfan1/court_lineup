@@ -150,8 +150,8 @@ export function App() {
                 >
                   <Typography sx={{ fontWeight: 700 }}>Nobody waiting</Typography>
                   <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-                    Add your name below to start a group. A court opens up once four names are
-                    together.
+                    Tap <strong>Start a group</strong> below and put your name down. A court
+                    opens up once four names are together.
                   </Typography>
                 </Paper>
               ) : (
@@ -208,15 +208,15 @@ export function App() {
             disabled={locked}
             onClick={() => setPrompt({ mode: 'create' })}
           >
-            Add my name
+            Start a group
           </Button>
         </Container>
       </Paper>
 
       <NameDialog
         open={prompt !== null}
-        title={prompt?.mode === 'join' ? 'Join this group' : 'Add my name'}
-        submitLabel={prompt?.mode === 'join' ? 'Join' : 'Add'}
+        title={prompt?.mode === 'join' ? 'Join this group' : 'Start a group'}
+        submitLabel={prompt?.mode === 'join' ? 'Join' : 'Start'}
         onClose={() => setPrompt(null)}
         onSubmit={(name) => {
           if (prompt?.mode === 'join') void board.joinGroup(prompt.groupId, name)
