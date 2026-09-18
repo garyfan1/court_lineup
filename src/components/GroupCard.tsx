@@ -1,5 +1,6 @@
 import { Box, Button, Chip, Paper, Typography } from '@mui/material'
 import type { Group } from '../types'
+import { courtTint } from '../theme'
 
 type Props = {
   group: Group
@@ -37,26 +38,45 @@ export function GroupCard({
       variant="outlined"
       sx={{
         p: 1.25,
-        ...(nextUp && { borderWidth: 2, borderColor: 'primary.main' }),
+        ...(nextUp && {
+          borderWidth: 2,
+          borderColor: 'primary.main',
+          bgcolor: courtTint(0.06),
+        }),
       }}
     >
       {nextUp && (
-        <Typography
-          variant="overline"
-          color="primary"
-          sx={{ display: 'block', lineHeight: 1.6, mb: 0.25 }}
-        >
-          Next up
-        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+          <Box
+            sx={{
+              px: 1.25,
+              py: 0.25,
+              borderRadius: 99,
+              bgcolor: 'primary.main',
+              color: 'primary.contrastText',
+              fontSize: '0.7rem',
+              fontWeight: 800,
+              letterSpacing: '0.12em',
+            }}
+          >
+            NEXT UP
+          </Box>
+          {!courtFree && (
+            <Typography variant="caption" color="text.secondary">
+              waiting for a court
+            </Typography>
+          )}
+        </Box>
       )}
 
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.75, mb: nextUp ? 1 : 0 }}>
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.75, mb: nextUp ? 1.25 : 0 }}>
         {group.players.map((name, i) => (
           // Anyone may remove anyone (ADR-0001). No confirmation: retyping is cheap.
           <Chip
             key={i}
             label={name}
             onDelete={disabled ? undefined : () => onRemove(i + 1, name)}
+            sx={{ bgcolor: 'background.paper', border: '1px solid', borderColor: 'divider' }}
           />
         ))}
         {Array.from({ length: free }, (_, i) => (
@@ -64,30 +84,24 @@ export function GroupCard({
             key={'free' + i}
             label="+ Join"
             variant="outlined"
+            color="primary"
             clickable
             disabled={disabled}
             onClick={onJoin}
-            sx={{ borderStyle: 'dashed' }}
+            sx={{ borderStyle: 'dashed', fontWeight: 700 }}
           />
         ))}
       </Box>
 
       {nextUp && (
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 1 }}>
-          {!courtFree && (
-            <Typography variant="caption" color="text.secondary">
-              Waiting for a court
-            </Typography>
-          )}
-          <Button
-            size="small"
-            variant="contained"
-            disabled={disabled || !courtFree}
-            onClick={onPlayNow}
-          >
-            Play now
-          </Button>
-        </Box>
+        <Button
+          fullWidth
+          variant="contained"
+          disabled={disabled || !courtFree}
+          onClick={onPlayNow}
+        >
+          Play now
+        </Button>
       )}
     </Paper>
   )

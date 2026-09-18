@@ -79,7 +79,20 @@ Only **End game** and **Clear board** get confirmations. Nothing else does.
 - **Mobile first**, designed at ~375px. The desktop version is the identical single
   column, centred, with side padding — MUI's `<Container maxWidth="sm">`. Do not
   design a separate wide layout.
-- **Default MUI theme.** No custom theme file. Styling via `sx` props only.
+- **One hue.** Green is the court, the brand, and every "you can act" signal — a
+  free court, the next up group, the primary button. Red is destructive and nothing
+  else. Everything else is neutral. A second accent colour is not available: two
+  colours is what makes the board answerable at a glance from across the hall.
+- **Nothing loads from the network.** No webfonts, no icon fonts, no images. The
+  type is a system stack, the app mark and the court are drawn in CSS. Hall wifi is
+  bad and the board must paint with the first frame.
+- **Custom theme in `src/theme.ts`. Light only** — no dark scheme, and a phone in
+  dark mode still gets the light board. It is read in a bright hall, and one scheme
+  is one set of surfaces to check every court tint against. Component styling stays
+  in `sx`; the theme holds palette, type, shape and MUI defaults only.
+- **Court markings are decoration.** The in-use court card is drawn as a court —
+  tinted surface, boundary line, a dashed net between the two rows of names. It must
+  never imply state the system does not hold: no sides, no serve, no score.
 - **Touch targets no smaller than 44px.** People tap this one-handed, standing up,
   sometimes holding a racket.
 - The board should be readable without scrolling on a typical phone when the queue
