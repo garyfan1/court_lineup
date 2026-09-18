@@ -23,7 +23,9 @@ is free. Everyone sees the same board; it updates live.
    - A group holds 1–4 names. Each name has a small remove control.
    - A group with fewer than four members is an **open group**: the whole card is
      tappable to join, and this must be obvious at a glance.
-   - Each group has a **Play now** button.
+   - Exactly one group — the **next up** group — carries a **Play now** button. It
+     is the earliest group in arrival order that has all four names. No other card
+     has the button at all, disabled or otherwise.
 4. A **sticky bottom bar** with the primary action: **Add my name**.
 5. **Clear board** — present, but deliberately hard to hit by accident. Never
    adjacent to a frequent action.
@@ -35,7 +37,7 @@ is free. Everyone sees the same board; it updates live.
 | **Add my name** | Dialog with one text field, pre-filled with the last name this browser used, fully editable → creates a new group containing that one name |
 | **Tap an open group** | Same dialog → the name joins that group |
 | **Remove a queued name** | Immediate, no confirmation. If it was the last name, the group disappears |
-| **Play now** | The group leaves the queue and lands on the lowest-numbered empty court. Disabled (not hidden) when all three courts are in use |
+| **Play now** | Only on the next up group. It leaves the queue and lands on the lowest-numbered empty court. Disabled (not hidden) when all three courts are in use |
 | **End game** | Confirmation dialog → the court empties, names are gone |
 | **Clear board** | Confirmation dialog → everything is wiped |
 
@@ -45,9 +47,13 @@ Only **End game** and **Clear board** get confirmations. Nothing else does.
 
 - **A group on a court is frozen.** Names cannot be removed, nobody can join, and
   the `x` placeholders are **not** tappable. A latecomer cannot take an `x`.
-- **Queue position confers no priority.** Any group may take any free court at any
-  time. So: no reordering handles, no "you're next", no position numbers, no visual
-  emphasis on the group at the top.
+- **Queue position confers priority, but only among full groups.** The next up
+  group is the earliest group of four; it alone may take a free court. A group of
+  fewer than four is not in the running and does **not** block the groups behind
+  it. So: the next up group is visually marked, and nothing else is — no reordering
+  handles, no position numbers, no per-group countdowns.
+- **A free court with no full group stays empty.** This is not an error state and
+  must not be dramatised. The queue says so once, quietly, in one line.
 - **Nobody picks a court.** There is no court selector anywhere.
 - **No login, no avatars, no identity.** Anyone can remove anyone's name, end any
   game, clear the board. There are no owned or highlighted "my" items.

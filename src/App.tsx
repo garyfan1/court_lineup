@@ -91,9 +91,16 @@ export function App() {
                 <Typography variant="overline" color="text.secondary">
                   Queue{board.queue.length > 0 ? ` (${board.queue.length})` : ''}
                 </Typography>
-                {!board.anyCourtFree && board.queue.length > 0 && (
+                {/* One line, never two: the queue is competing for the fold with three
+                    court cards. The next-up card carries the message the rest of the
+                    time, so this only speaks when nothing else can. */}
+                {board.queue.length > 0 && (
                   <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
-                    All three courts are in use.
+                    {!board.anyCourtFree
+                      ? 'All three courts are in use.'
+                      : board.nextUpId === null
+                        ? 'A court is free. The first group of four to fill up takes it.'
+                        : null}
                   </Typography>
                 )}
               </Box>
@@ -102,7 +109,8 @@ export function App() {
                 <Paper variant="outlined" sx={{ p: 3, textAlign: 'center', borderStyle: 'dashed' }}>
                   <Typography color="text.secondary">Nobody waiting.</Typography>
                   <Typography variant="body2" color="text.secondary">
-                    Add your name below to start a group.
+                    Add your name below to start a group. A court opens up once four
+                    names are together.
                   </Typography>
                 </Paper>
               ) : (
@@ -112,7 +120,8 @@ export function App() {
                       key={group.id}
                       group={group}
                       disabled={locked}
-                      canPlay={board.anyCourtFree}
+                      nextUp={group.id === board.nextUpId}
+                      courtFree={board.anyCourtFree}
                       onJoin={() => setPrompt({ mode: 'join', groupId: group.id })}
                       onRemove={(index, name) => void board.leaveGroup(group.id, index, name)}
                       onPlayNow={() => void board.playNow(group.id)}

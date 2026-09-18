@@ -27,7 +27,11 @@ export function useBoard() {
 
   const fetchBoard = useCallback(async () => {
     const mine = ++seq.current
-    const { data, error } = await supabase.from('groups').select('*').order('created_at')
+    const { data, error } = await supabase
+      .from('groups')
+      .select('*')
+      .order('created_at')
+      .order('id') // total order, matching the tie-break play_now uses
     if (mine !== seq.current) return // a newer fetch has started; this answer is stale
     if (error) return
     setGroups((data ?? []) as Group[])
@@ -138,9 +142,18 @@ export function useBoard() {
   }))
   const queue = groups.filter((g) => g.court_id === null)
 
+  /**
+   * The one group entitled to a court: the earliest-created group in the queue that
+   * has all four players. Groups of fewer than four are not in the running and do
+   * not block anyone behind them. Mirrors the rule play_now enforces; the server is
+   * still the one that decides.
+   */
+  const nextUpId = queue.find((g) => g.players.length === 4)?.id ?? null
+
   return {
     courts,
     queue,
+    nextUpId,
     loaded,
     connected,
     busy,
