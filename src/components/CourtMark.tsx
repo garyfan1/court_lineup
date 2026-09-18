@@ -12,7 +12,7 @@ export function CourtMark() {
         width: 30,
         height: 30,
         flexShrink: 0,
-        borderRadius: 2,
+        borderRadius: '8px',
         bgcolor: 'primary.main',
         display: 'grid',
         placeItems: 'center',

@@ -38,7 +38,7 @@ export function CourtCard({ number, group, disabled, onEndGame }: Props) {
           sx={{
             px: 1.5,
             py: 0.25,
-            borderRadius: 99,
+            borderRadius: '999px',
             bgcolor: 'primary.main',
             color: 'primary.contrastText',
             fontSize: '0.75rem',
@@ -76,8 +76,13 @@ export function CourtCard({ number, group, disabled, onEndGame }: Props) {
       <Box
         sx={{
           position: 'relative',
-          p: 0.75,
-          borderRadius: 2,
+          p: '6px',
+          // Concentric radii, in explicit px because sx multiplies `borderRadius` by
+          // theme.shape.borderRadius (14) and nested corners then invert: an inner
+          // radius must be the outer one MINUS the padding between them, or the
+          // curves fight. Paper is 14 with 8px padding, so the court is 6; the court
+          // has 6px padding, so a slot is 0.
+          borderRadius: '6px',
           bgcolor: courtTint(0.07),
           border: '1px solid',
           borderColor: courtTint(0.25),
@@ -109,7 +114,9 @@ export function CourtCard({ number, group, disabled, onEndGame }: Props) {
                 position: 'relative',
                 height: 32,
                 px: 1,
-                borderRadius: 1.5,
+                // Square, which is also what a court's boxes are. Rounded name pills
+                // floating inside a drawn court never looked like part of it.
+                borderRadius: '2px',
                 bgcolor: slot ? 'background.paper' : 'transparent',
                 border: slot ? 'none' : '1px dashed',
                 borderColor: courtTint(0.3),

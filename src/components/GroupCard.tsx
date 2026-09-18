@@ -51,7 +51,7 @@ export function GroupCard({
             sx={{
               px: 1.25,
               py: 0.25,
-              borderRadius: 99,
+              borderRadius: '999px',
               bgcolor: 'primary.main',
               color: 'primary.contrastText',
               fontSize: '0.7rem',
