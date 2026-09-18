@@ -18,12 +18,30 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           cache: npm
       - run: npm ci
+
+      # A missing variable would otherwise produce a green build and a blank white
+      # page: the app throws on load and nothing in CI notices. Fail loudly instead.
+      - name: Check the build is configured
+        env:
+          URL: ${{ vars.VITE_SUPABASE_URL }}
+          KEY: ${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY }}
+        run: |
+          fail=0
+          [ -n "$URL" ] || { echo "::error::Repository variable VITE_SUPABASE_URL is not set (Settings > Secrets and variables > Actions > Variables)"; fail=1; }
+          [ -n "$KEY" ] || { echo "::error::Repository variable VITE_SUPABASE_PUBLISHABLE_KEY is not set"; fail=1; }
+          case "$URL" in
+            */rest/v1|*/rest/v1/) echo "::error::VITE_SUPABASE_URL must be the project URL, not the REST endpoint. Drop the /rest/v1 suffix."; fail=1 ;;
+          esac
+          case "$KEY" in
+            sb_secret_*) echo "::error::That is the SECRET key. It bypasses RLS and must never be built into a public bundle. Use the sb_publishable_ key."; fail=1 ;;
+          esac
+          exit $fail
       - run: npm run build
         env:
           # Repository *variables*, not secrets: both of these ship inside the
@@ -32,7 +50,7 @@ jobs:
           # never referenced here and must never be.
           VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
           VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY }}
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: dist
 
@@ -44,4 +62,4 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
